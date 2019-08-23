@@ -1,4 +1,5 @@
 import weechat as w
+from collections import OrderedDict
 
 w.register("super_nick", "FlashCode", "1.0", "GPL3", "Test script", "", "")
 
@@ -10,25 +11,23 @@ def build_list(data, item, window):
     while w.infolist_next(infolist_nicklist):
         nick = w.infolist_string(infolist_nicklist, 'name')
         prefix = w.infolist_string(infolist_nicklist, 'prefix')
+        pColor = w.color(w.infolist_string(infolist_nicklist, 'prefix_color'))
         nick_type = w.infolist_string(infolist_nicklist, 'type')
         if nick_type != 'nick':
             pass
         else:
-            if not nicklist.has_key(prefix):
-                nicklist[prefix]=[]
-            nicklist[prefix].append(nick)
+            if not nicklist.has_key(pColor + prefix):
+                if prefix == '':
+                    prefix = ' '
+                nicklist[pColor + prefix]=[]
+            nicklist[pColor + prefix].append(nick)
 
     nickListString = ''
+    opOrder = {k:v for v,k in enumerate(['~', '&', '@', '%', '+', ' '])}
+    nicklist = OrderedDict(sorted(nicklist.items(), key=lambda i:opOrder.get(i[0][-1])))
+    print(nicklist)
     for p,l in nicklist.items():
-        pColor = w.color('chat')
-        if p == '@':
-            pColor = w.color('lightgreen')
-        elif p == '+':
-            pColor = w.color('yellow')
-        elif p == '%':
-            pColor = w.color('lightmagenta')
-        nickListString += ''.join(['{}{}{}{}\n'.format(pColor, p, w.info_get('nick_color', n), n) for n in l])
-    # print(nickListString)
+        nickListString += ''.join(['{}{}{}\n'.format(p, w.info_get('nick_color', n), n) for n in l])
     return nickListString
 
 def update_super_nick(data, signal, signal_data):
