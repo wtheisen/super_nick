@@ -21,7 +21,7 @@ def build_list(data, item, window):
     nickListString = ''
     for p,l in nicklist.items():
         nickListString += ''.join(['{}{}{}\n'.format(p, w.info_get('nick_color', n), n) for n in l])
-    print(nickListString)
+    # print(nickListString)
     return nickListString
 
 def update_super_nick(data, signal, signal_data):
@@ -34,7 +34,13 @@ super_nick_bar = w.bar_new("super_nick", "off", "100", "root", "", "right", "ver
     "15", "15", "default", "cyan", "black", "on", 'super_nick_list')
 
 h = w.hook_signal('buffer_switch', 'update_super_nick', '')
+h = w.hook_signal('buffer_opened', 'update_super_nick', '')
+
 h = w.hook_signal('window_switch', 'update_super_nick', '')
 h = w.hook_signal('irc_channel_opened', 'update_super_nick', '')
+
+h = w.hook_signal('nicklist_nick_changed', 'update_super_nick', '')
+h = w.hook_signal('nicklist_nick_added', 'update_super_nick', '')
+h = w.hook_signal('nicklist_nick_removed', 'update_super_nick', '')
 
 print('super_nick loaded...')
