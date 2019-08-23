@@ -20,7 +20,7 @@ def build_list(data, item, window):
 
     nickListString = ''
     for p,l in nicklist.items():
-        nickListString += ''.join(['{}{}\n'.format(p, n) for n in l])
+        nickListString += ''.join(['{}{}{}\n'.format(p, w.info_get('nick_color', n), n) for n in l])
     print(nickListString)
     return nickListString
 
