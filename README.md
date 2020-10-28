@@ -4,3 +4,8 @@ One of the most frustrating things about weechat is that each window has its
 own nicklist. I couldn't figure out how to do a single nicklist that has the
 nicks for the window in focus and so I wrote this plugin to do so. It still
 needs some polish but the basic functionality is there.
+
+![Example](download.gif)
+
+Notice the root nicklist adapting to the highlighted window, while reducing the
+horizontal amount of screen real-estate being sacrificed to display nicks.
