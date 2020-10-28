@@ -1,3 +1,12 @@
+#William Theisen
+#wtheisen@nd.edu
+#MIT
+
+#Implements a single "root" nicklist that will hold the nicks of the window in
+#focus, regardless of how many other windows are open.
+
+#USAGE: /bar toggle super_nick
+
 import weechat as w
 from collections import OrderedDict
 
@@ -25,7 +34,7 @@ def build_list(data, item, window):
     nickListString = ''
     opOrder = {k:v for v,k in enumerate(['~', '&', '@', '%', '+', ' '])}
     nicklist = OrderedDict(sorted(nicklist.items(), key=lambda i:opOrder.get(i[0][-1])))
-    print(nicklist)
+    # print(nicklist)
     for p,l in nicklist.items():
         nickListString += ''.join(['{}{}{}\n'.format(p, w.info_get('nick_color', n), n) for n in l])
     return nickListString
